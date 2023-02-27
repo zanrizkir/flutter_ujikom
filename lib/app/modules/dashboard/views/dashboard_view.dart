@@ -3,12 +3,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../data/entertainment_response.dart';
 import '../../../data/headline_response.dart';
 import '../../../data/sport_response.dart';
 import '../../../data/technology_response.dart';
+import '../../home/views/home_view.dart';
 import '../controllers/dashboard_controller.dart';
 
 class DashboardView extends GetView<DashboardController> {
@@ -16,11 +18,20 @@ class DashboardView extends GetView<DashboardController> {
   @override
   Widget build(BuildContext context) {
     DashboardController controller = Get.put(DashboardController());
+    final auth = GetStorage();
     final ScrollController scrollController = ScrollController();
     return SafeArea(
       child: DefaultTabController(
         length: 4,
         child: Scaffold(
+             floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              await auth.erase();
+              Get.offAll(() => const HomeView());
+            },
+            backgroundColor: Colors.redAccent,
+            child: const Icon(Icons.logout_rounded),
+          ),
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(120.0),
             child: Column(
